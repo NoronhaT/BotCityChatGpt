@@ -10,7 +10,7 @@ Programa desenvolvido utilizando as tecnologias do momento.
 
 
 Necessidades iniciais:
-
+- Você precisa configurar uma conta na BotCity e baixar os recursos do projeto para que ele funcione https://developers.botcity.dev/
 - Possuir uma chave da OpenIA, você consegue uma pelo link: https://beta.openai.com/account/api-keys
 - Possuir uma chave api e senha para serviços do Google: https://cloud.google.com/apis
 - Uma conta no Instagram.
