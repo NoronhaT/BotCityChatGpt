@@ -144,7 +144,7 @@ def buscador_imagem():
     busca = str(trad.text)
 
     # Criar instância
-    gis = GoogleImagesSearch('') #chaves do usuário
+    gis = GoogleImagesSearch('AIzaSyDUqu6ja_p7wPNOSOLHW_eyydCtF3bwLfM', '65d579beb04744d08') #chaves do usuário
     _search_params = {
         'q': busca,
         'num': 1,
@@ -242,10 +242,12 @@ class Bot(WebBot):
             print('Login efetuado com sucesso!')
             print('---------------')
 
-            botao_nao = self.find_element(
+            if self.find_element(
                 selector="/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/button[2]",
-                by=By.XPATH)
-            botao_nao.click()
+                by=By.XPATH):
+                    self.find_element(
+                        selector="/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[3]/button[2]",
+                        by=By.XPATH).click()
             self.wait(10000)
 
             print('Iniciando postagem')
