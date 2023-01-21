@@ -1,7 +1,9 @@
+import time
+import webbrowser
 import selenium.common.exceptions
 from botcity.web import WebBot
 from botcity.web import By
-from google_images_search import GoogleImagesSearch
+import requests
 import os
 import shutil
 import openai
@@ -9,12 +11,15 @@ import pyautogui as pya
 from googletrans import Translator
 import ftfy
 
+
+
+
 # Utilizo Google Translate para converter a solicitação do usuário para o inglês e melhorar os resultados da busca de
 # img.
 
 translator = Translator()
-
-
+chrome_path= r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+webbrowser.register('chrome', None,webbrowser.BackgroundBrowser(chrome_path))
 print('---------------------------------------------')
 print('ASSISTENTE DE ENVIO DE POSTAGENS - BotCitySocilMedia')
 
@@ -24,8 +29,6 @@ diretorio_video = diretorio_atual + '/Videos'
 diretorio_fotos = diretorio_atual + '/Fotos'
 diretorio_frases = diretorio_atual + '/Frases'
 diretorio_imagens = diretorio_atual + '\Imagem'
-
-
 
 
 def criar_diretorios():
@@ -126,7 +129,7 @@ def frase_tema():
     print('Escreva detalhadamente sobre o que será o seu post')
     print('---------------------------------------------')
     frase = input("Sobre o que será o post?: ")
-
+    frase = frase + ' insira hashtags ao final do texto escrito.'
     with open(diretorio_frases + '/texto.txt', 'w', encoding='utf-8') as theme:
         theme.write(frase)
 
@@ -143,21 +146,32 @@ def buscador_imagem():
 
     busca = str(trad.text)
 
-    # Criar instância
-    gis = GoogleImagesSearch('AIzaSyDUqu6ja_p7wPNOSOLHW_eyydCtF3bwLfM', '65d579beb04744d08') #chaves do usuário
-    _search_params = {
-        'q': busca,
-        'num': 1,
-        'fileType': 'jpg|png',
-        'rights': 'cc_publicdomain|cc_attribute|cc_sharealike|cc_noncommercial|cc_nonderived',
-        'safe': 'safeUndefined',  ## parametro único
-        'imgType': 'photo',  ## parametro único
-        'imgSize': 'large',  ## parametro único
-        'imgDominantColor': 'imgDominantColorUndefined',  ## parametro único
-        'imgColorType': 'color'  ##
-    }
-    gis.search(search_params=_search_params,
-               path_to_dir=diretorio_imagens)
+    if not os.path.exists(diretorio_atual + '/Imagem'):
+        os.makedirs(diretorio_atual + '/Imagem')
+
+    response = openai.Image.create(
+        prompt=busca,
+        n=1,
+        size="1024x1024"
+    )
+    image_url = response['data'][0]['url']
+    res = requests.get(image_url, stream=True)
+    print('Verifique a imagem em seu browser.')
+    webbrowser.get('chrome').open_new_tab(image_url)
+    time.sleep(10)
+    print('------------------------------------------------------------------------')
+
+    imagem_ia = busca + '.jpg'
+
+    if res.status_code == 200:
+        with open(imagem_ia, 'wb') as f:
+            shutil.copyfileobj(res.raw, f)
+
+
+    shutil.move(imagem_ia, diretorio_imagens)
+
+
+
 
 
 # PARAMETROS
@@ -278,7 +292,7 @@ class Bot(WebBot):
 
             dir_imagem = os.listdir(diretorio_imagens)
             imagem = dir_imagem[0]
-            caminho = diretorio_imagens + '\\' + imagem
+            caminho = os.path.join(diretorio_imagens,imagem)
 
             pya.write(caminho)
             pya.press('enter')
