@@ -298,13 +298,10 @@ class Bot(WebBot):
             pya.press('enter')
             self.wait(3000)
 
-            if self.find_element(selector='/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div['
+            botao_avancar = self.find_element(selector='/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div['
                                                        '3]/div/div/div/div/div[2]/div/div/div/div[1]/div/div/div['
-                                                       '3]/div/button', by=By.XPATH):
-                self.find_element(selector='/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div['
-                                                       '3]/div/div/div/div/div[2]/div/div/div/div[1]/div/div/div['
-                                                       '3]/div/button', by=By.XPATH).click()
-   
+                                                       '3]/div/button', by=By.XPATH)
+            botao_avancar.click()
             self.wait(3000)
             print('Avançando com a postagem...')
             botao_avancar_dois = self.find_element(
@@ -325,7 +322,7 @@ class Bot(WebBot):
             post = ftfy.fix_text(post)
 
             postagem = self.find_element(
-                selector='/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div[3]/div/div/div/div/div[2]/div/div/div/div[2]/div[2]/div/div/div/div[2]/div[1]/div[1]',
+                selector='/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div[3]/div/div/div/div/div[2]/div/div/div/div[2]/div[2]/div/div/div/div[2]/div[1]/textarea',
                 by=By.XPATH)
             postagem.click()
             self.wait(3000)
