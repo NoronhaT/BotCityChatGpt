@@ -298,10 +298,13 @@ class Bot(WebBot):
             pya.press('enter')
             self.wait(3000)
 
-            botao_avancar = self.find_element(selector='/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div['
+            if self.find_element(selector='/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div['
                                                        '3]/div/div/div/div/div[2]/div/div/div/div[1]/div/div/div['
-                                                       '3]/div/button', by=By.XPATH)
-            botao_avancar.click()
+                                                       '3]/div/button', by=By.XPATH):
+                self.find_element(selector='/html/body/div[2]/div/div/div/div[2]/div/div/div[1]/div/div['
+                                                       '3]/div/div/div/div/div[2]/div/div/div/div[1]/div/div/div['
+                                                       '3]/div/button', by=By.XPATH).click()
+   
             self.wait(3000)
             print('Avançando com a postagem...')
             botao_avancar_dois = self.find_element(
